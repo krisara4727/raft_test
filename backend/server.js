@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended:true
 }));
-mongoose.connect('mongodb://localhost/project',{
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project',{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex:true
@@ -50,6 +50,9 @@ app.delete('/deleteUsers', async(req,res) => {
     })
 })
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('frontend/build'));
+}
 
         
 app.listen(port , () =>{
